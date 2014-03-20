@@ -4,6 +4,7 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 import re
+import warnings
 import lineid_plot
 from ..spectools import rvcorr
 from ..utils import File
@@ -24,7 +25,10 @@ class Synplot:
             self.spath = synplot_path
 
         # Set software to run Synplot.pro
-        if idl:
+        if isinstance(idl, str):
+            self.software = idl
+        elif idl:
+            #self.software = '/Applications/itt/idl/bin/idl'  #Only works for me now!
             self.software = 'idl'
         else:
             self.software = 'gdl'
