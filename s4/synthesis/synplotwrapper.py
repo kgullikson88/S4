@@ -54,7 +54,10 @@ class Synplot:
 
         # Check if a observation spectrum is available
         if 'observ' in self.parameters:
-            self.observation = specio.load_spectrum(self.parameters['observ'])
+            if isinstance(self.parameters['observ'], str):
+              self.observation = specio.load_spectrum(self.parameters['observ'])
+            elif isinstance(self.parameters['observ'], np.ndarray):
+              self.observation = self.parameters['observ']
             #Delete entry to not input in IDL
             del self.parameters['observ']
 
@@ -64,6 +67,11 @@ class Synplot:
         # check for normalization
         if 'relative' not in self.parameters:
             self.parameters['relative'] = 0
+
+        # The idl rv keyword doesn't seem to work? Do it here instead
+        self.rv = 0.0
+        if 'rv' in self.parameters:
+            self.rv = self.parameters.pop('rv')
 
     #=========================================================================
     #
@@ -96,6 +104,7 @@ class Synplot:
         #load synthetized spectra
         try:
             self.spectrum = np.loadtxt(self.spath + 'fort.11')
+            self.spectrum[:,0] *= (1.0 + self.rv/3e5)
         except IOError:
             raise IOError('Calculated spectrum is not available. Check if ' +
                 'syn(spec|plot) ran correctly.')

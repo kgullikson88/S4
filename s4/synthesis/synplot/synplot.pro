@@ -221,7 +221,7 @@ if n_elements(atmos) eq 0 and ispec ge 0 then begin
          if n_elements(grid) eq 0 then grid='../bstar2006/BG'
          if n_elements(metal) gt 0 then grid='~/bstar2006/BG'
          if n_elements(gri2) eq 0 then gri2='~/bstar2006/BL'
-         if teff lt 15000 or teff ge 30000. then begin
+         if teff lt 14000 or teff ge 30000. then begin
             print,'teff out of range'
             return
          endif
@@ -649,6 +649,7 @@ endif
 ;  (if required)
 ;      
 if n_elements(scale) eq 0 then fl=sp(1,*) else fl=sp(1,*)*scale
+print, "rv =", rv
 if n_elements(rv) eq 0 then wl=sp(0,*) else wl=sp(0,*)*(1.+rv/2.9977925e5)
 if iplot le 0 then begin
 ;     
